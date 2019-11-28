@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0bd441"],{"2aea":function(e,n,t){"use strict";t.r(n);var a=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[e._v("ToDo")])},c=[],o={name:"Live2d"},u=o,i=t("2877"),r=Object(i["a"])(u,a,c,!1,null,"42957b26",null);n["default"]=r.exports}}]);
+//# sourceMappingURL=chunk-2d0bd441.dafbde70.js.map
