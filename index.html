@@ -1,1 +1,83 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><title>React App</title></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script src="/vendors~main.ca8bc058de5fed0c0566.js"></script><script src="/main.57a3f4cdefe7216d7717.js"></script></body></html>
+<html>
+<style>
+	html,body,canvas{margin:0;padding:0;width:100%;height:100%;}
+	canvas{display:block}
+</style>
+    <body>
+        <canvas >Generate document</canvas>
+    </body>
+   
+    <script>
+		const canvasRender = (()=>{
+			const canvas = document.querySelector('canvas')
+			const {width,height}=document.body.getBoundingClientRect();
+			canvas.width = width
+			canvas.height = height
+			return {
+				width,
+				height,
+				ctx: canvas.getContext('2d'),
+				options:{
+					hoverIndex:-1,
+					data:[]
+				},
+				_init(){
+					this.randomData();
+					this.animationMouse();
+					this.render();
+				},
+				randomData(){
+					const {data}=this.options
+					data.splice(0,data.length);
+					new Array(10000).fill(1).forEach(i=>{
+						data.push({
+							radius:Math.round(Math.random()*100),
+							x:Math.round(Math.random()*this.width),
+							y:Math.round(Math.random()*this.height),
+							color:[Math.round(Math.random()*255),Math.round(Math.random()*255),Math.round(Math.random()*255)]
+						})
+					})
+				},
+				calc(){
+				
+				},
+				animationMouse(){
+					document.addEventListener('mousemove',({clientX,clientY})=>{
+						const {data}=this.options
+						const tempData = JSON.parse(JSON.stringify(data))
+						tempData.reverse().every((temp,index)=>{
+							this.ctx.beginPath()
+							this.ctx.arc(temp.x,temp.y,temp.radius,0,Math.PI * 2)
+							if (this.ctx.isPointInPath(clientX,clientY)){
+								this.options.hoverIndex=index
+								console.log(index)
+								return false;
+							}
+							return true
+						})
+					})
+				},
+				render(){
+					requestAnimationFrame(()=>{
+						this.render();
+						const {data,hoverIndex}=this.options
+						this.ctx.clearRect(0,0,this.width,this.height);
+						data.forEach(({radius,x,y,color},index)=>{
+							this.ctx.beginPath()
+							this.ctx.fillStyle=`rgb(${color.join(',')})`
+							this.ctx.arc(x,y,radius,0,Math.PI * 2)
+							this.ctx.fill()
+							if(data.length-index-1===hoverIndex){
+								console.log(index)
+								this.ctx.strokeStyle='rgb(0,0,0)'
+								this.ctx.strokeWidth=4
+								this.ctx.stroke()
+							}
+						})
+					})
+				}
+			}
+		})();
+		canvasRender._init();
+    </script>
+</html>
